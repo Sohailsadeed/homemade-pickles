@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | HomeMade Pickles & Snacks</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fdf9f3 0%, #f5eee0 100%);
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .auth-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .auth-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-control {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-control label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .form-control input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1.5px solid #eee;
+            background: #fcfcfc;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-control input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(76, 114, 68, 0.1);
+        }
+
+        .error-badge {
+            background: #fff0f0;
+            color: #d63031;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .auth-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f5f5f5;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-card animate-fade-up">
+            <div class="auth-header">
+                <a href="/" style="text-decoration: none; display: inline-block; margin-bottom: 1rem;">
+                    <div class="brand-icon" style="margin: 0 auto;">HP</div>
+                </a>
+                <h2>Create Account</h2>
+                <p>Join our community of flavor lovers.</p>
+            </div>
+
+            {% if error %}
+            <div class="error-badge">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="{{ url_for('signup') }}" method="POST">
+                <div class="form-control">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Choose a unique username" required>
+                </div>
+                <div class="form-control">
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="name@example.com" required>
+                </div>
+                <div class="form-control">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Create a strong password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    Create Account <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="{{ url_for('login') }}">Login instead</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

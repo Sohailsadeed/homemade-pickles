@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | HomeMade</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .checkout-section {
+            padding: 140px 5% 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+        }
+
+        @media (max-width: 968px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .premium-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section-title i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #eee;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(76, 114, 68, 0.1);
+        }
+
+        .order-summary-card {
+            background: #fafafa;
+            border: 1px solid #eee;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .payment-option {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .payment-option input {
+            display: none;
+        }
+
+        .payment-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            border: 1.5px solid #eee;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-option input:checked+.payment-label {
+            border-color: var(--primary);
+            background: rgba(76, 114, 68, 0.05);
+        }
+
+        .payment-option input:checked+.payment-label i {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="glass-header">
+        <a href="/" class="brand">
+            <div class="brand-icon">HP</div>
+            <h2 class="brand-font">HomeMade</h2>
+        </a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}" class="nav-link">Dashboard</a></li>
+                <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fas fa-shopping-cart"></i> <span
+                            id="cart-count" class="cart-counter">0</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="checkout-section">
+        <h1 class="brand-font" style="font-size: 2.5rem; margin-bottom: 2.5rem;">Secure Checkout</h1>
+
+        <form id="checkout-form" method="POST" action="{{ url_for('checkout') }}" class="checkout-grid animate-fade-up">
+            <input type="hidden" name="cart_data" id="cart-data">
+            <input type="hidden" name="total_amount" id="total-amount-data">
+
+            <div class="checkout-details">
+                <div class="premium-card" style="margin-bottom: 2rem;">
+                    <div class="form-section-title">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3 class="brand-font">Delivery Information</h3>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-input" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Delivery Address</label>
+                            <input type="text" name="address" class="form-input"
+                                placeholder="House No, Street, Locality" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" name="phone" class="form-input" placeholder="10-digit mobile"
+                                pattern="[0-9]{10}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email (Optional)</label>
+                            <input type="email" name="email" class="form-input" placeholder="john@example.com">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="premium-card">
+                    <div class="form-section-title">
+                        <i class="fas fa-credit-card"></i>
+                        <h3 class="brand-font">Payment Method</h3>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="cod" value="cod" checked>
+                        <label for="cod" class="payment-label">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <div>
+                                <span style="display: block; font-weight: 600;">Cash on Delivery</span>
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">Pay when you receive your
+                                    pickles</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="upi" value="upi">
+                        <label for="upi" class="payment-label">
+                            <i class="fas fa-qrcode"></i>
+                            <div>
+                                <span style="display: block; font-weight: 600;">UPI Payment</span>
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">Google Pay, PhonePe, or
+                                    Paytm</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-sidebar">
+                <div class="premium-card order-summary-card">
+                    <h3 class="brand-font" style="margin-bottom: 1.5rem;">Your Order</h3>
+
+                    <div id="summary-items" style="margin-bottom: 2rem;">
+                        <!-- Items injected here -->
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Items Total</span>
+                        <span id="subtotal">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Delivery Fee</span>
+                        <span style="color: #27ae60;">FREE</span>
+                    </div>
+
+                    <div class="summary-total"
+                        style="border-top: 1px solid #ddd; padding-top: 1.5rem; margin-top: 1rem;">
+                        <span style="font-size: 1.1rem;">Total to Pay</span>
+                        <span id="final-total" style="font-size: 1.5rem; color: var(--primary);">₹0</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; margin-top: 2rem; justify-content: center; height: 60px; font-size: 1.1rem;">
+                        Confirm Order <i class="fas fa-lock" style="margin-left: 10px; font-size: 0.9rem;"></i>
+                    </button>
+
+                    <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 1.5rem;">
+                        <i class="fas fa-shield-alt"></i> Secure transactional encryption
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <footer style="background: var(--text-main); color: rgba(255,255,255,0.7); padding: 4rem 5%; text-align: center;">
+        <h2 class="brand-font" style="color: white; margin-bottom: 1rem;">HomeMade Pickles & Snacks</h2>
+        <p>&copy; 2024 HomeMade. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function initCheckout() {
+            if (cart.length === 0) {
+                window.location.href = "{{ url_for('cart') }}";
+                return;
+            }
+
+            const itemsContainer = document.getElementById('summary-items');
+            let total = 0;
+            let count = 0;
+
+            const html = cart.map(item => {
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                count += item.qty;
+                return `
+                    <div class="item-row">
+                        <div>
+                            <div style="font-weight: 600;">${item.name}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">${item.qty} × ${item.weight}</div>
+                        </div>
+                        <div style="font-weight: 500;">₹${itemTotal}</div>
+                    </div>
+                `;
+            }).join('');
+
+            itemsContainer.innerHTML = html;
+            document.getElementById('subtotal').textContent = `₹${total}`;
+            document.getElementById('final-total').textContent = `₹${total}`;
+            document.getElementById('cart-count').textContent = count;
+
+            // Prep hidden fields
+            document.getElementById('cart-data').value = JSON.stringify(cart);
+            document.getElementById('total-amount-data').value = total;
+        }
+
+        document.getElementById('checkout-form').addEventListener('submit', function (e) {
+            // Standard form submission handles the redirect/backend logic
+            // We just ensure the fields are populated
+        });
+
+        initCheckout();
+    </script>
+</body>
+
+</html>

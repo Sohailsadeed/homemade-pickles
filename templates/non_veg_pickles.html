@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Veg Pickles | HomeMade</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .page-header {
+            padding: 140px 5% 40px;
+            background: var(--bg-creamy);
+            text-align: center;
+        }
+
+        .product-catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            padding: 2rem 5% 5rem;
+        }
+
+        .product-card-premium {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .product-card-premium:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            height: 240px;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card-premium:hover .product-img-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .price-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1.5px solid #eee;
+            margin-bottom: 1.2rem;
+            font-family: inherit;
+            background: #fafafa;
+            cursor: pointer;
+        }
+
+        .price-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="glass-header">
+        <a href="/" class="brand">
+            <div class="brand-icon">HP</div>
+            <h2 class="brand-font">HomeMade</h2>
+        </a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}" class="nav-link">Dashboard</a></li>
+                <li><a href="{{ url_for('veg_pickles') }}" class="nav-link">Veg</a></li>
+                <li><a href="{{ url_for('non_veg_pickles') }}" class="nav-link">Non-Veg</a></li>
+                <li><a href="{{ url_for('snacks') }}" class="nav-link">Snacks</a></li>
+                <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fas fa-shopping-cart"></i> <span
+                            id="cart-count" class="cart-counter">0</span></a></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-outline btn-sm">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1 class="brand-font" style="font-size: 3rem; color: var(--primary);">Non-Veg Pickles</h1>
+        <p style="color: var(--text-muted);">Succulent meats and seafood, slow-cooked with heirloom spices.</p>
+    </div>
+
+    <div class="product-catalog">
+        <!-- Product 1 -->
+        <div class="product-card-premium animate-fade-up">
+            <div class="product-img-wrapper">
+                <img src="/static/images/chicken-boneless-pickle.jpg" alt="Chicken Pickle">
+            </div>
+            <h3 class="brand-font" style="margin-bottom: 0.5rem;">Classic Chicken Pickle</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">Tender, juicy
+                chicken slow-cooked with aromatic masalas.</p>
+
+            <select class="price-select" id="chicken-pickle">
+                <option value='{"weight":"250g","price":600}'>250g - ₹600</option>
+                <option value='{"weight":"500g","price":1200}'>500g - ₹1200</option>
+                <option value='{"weight":"1kg","price":1800}'>1kg - ₹1800</option>
+            </select>
+
+            <button class="btn btn-primary"
+                onclick="addToCart('Classic Chicken Pickle', 'chicken-pickle', '/static/images/chicken-boneless-pickle.jpg')"
+                style="width: 100%; justify-content: center;">
+                Add to Cart <i class="fas fa-cart-plus"></i>
+            </button>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card-premium animate-fade-up" style="animation-delay: 0.1s;">
+            <div class="product-img-wrapper">
+                <img src="/static/images/fish pickle.JPG" alt="Fish Pickle">
+            </div>
+            <h3 class="brand-font" style="margin-bottom: 0.5rem;">Spicy Fish Pickle</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">Succulent fish
+                pieces infused with bold coastal flavors.</p>
+
+            <select class="price-select" id="fish-pickle">
+                <option value='{"weight":"250g","price":200}'>250g - ₹200</option>
+                <option value='{"weight":"500g","price":400}'>500g - ₹400</option>
+                <option value='{"weight":"1kg","price":800}'>1kg - ₹800</option>
+            </select>
+
+            <button class="btn btn-primary"
+                onclick="addToCart('Spicy Fish Pickle', 'fish-pickle', '/static/images/fish pickle.JPG')"
+                style="width: 100%; justify-content: center;">
+                Add to Cart <i class="fas fa-cart-plus"></i>
+            </button>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card-premium animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="product-img-wrapper">
+                <img src="/static/images/GonguraMutton-1.jpg" alt="Gongura Mutton">
+            </div>
+            <h3 class="brand-font" style="margin-bottom: 0.5rem;">Gongura Mutton</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">Rich mutton
+                slow-cooked with tangy sorrel leaves.</p>
+
+            <select class="price-select" id="gongura-mutton">
+                <option value='{"weight":"250g","price":400}'>250g - ₹400</option>
+                <option value='{"weight":"500g","price":800}'>500g - ₹800</option>
+                <option value='{"weight":"1kg","price":1600}'>1kg - ₹1600</option>
+            </select>
+
+            <button class="btn btn-primary"
+                onclick="addToCart('Gongura Mutton', 'gongura-mutton', '/static/images/GonguraMutton-1.jpg')"
+                style="width: 100%; justify-content: center;">
+                Add to Cart <i class="fas fa-cart-plus"></i>
+            </button>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card-premium animate-fade-up" style="animation-delay: 0.3s;">
+            <div class="product-img-wrapper">
+                <img src="/static/images/mutton pickle.jpg" alt="Mutton Pickle">
+            </div>
+            <h3 class="brand-font" style="margin-bottom: 0.5rem;">Savory Mutton Pickle</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">Tender mutton
+                pieces marinated in traditional royal spices.</p>
+
+            <select class="price-select" id="mutton-pickle">
+                <option value='{"weight":"250g","price":400}'>250g - ₹400</option>
+                <option value='{"weight":"500g","price":800}'>500g - ₹800</option>
+                <option value='{"weight":"1kg","price":1600}'>1kg - ₹1600</option>
+            </select>
+
+            <button class="btn btn-primary"
+                onclick="addToCart('Savory Mutton Pickle', 'mutton-pickle', '/static/images/mutton pickle.jpg')"
+                style="width: 100%; justify-content: center;">
+                Add to Cart <i class="fas fa-cart-plus"></i>
+            </button>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-card-premium animate-fade-up" style="animation-delay: 0.4s;">
+            <div class="product-img-wrapper">
+                <img src="/static/images/prawns_gongura.jpg" alt="Gongura Prawns">
+            </div>
+            <h3 class="brand-font" style="margin-bottom: 0.5rem;">Gongura Prawns</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">A zesty fusion
+                of succulent prawns and fresh gongura leaves.</p>
+
+            <select class="price-select" id="gongura-prawns">
+                <option value='{"weight":"250g","price":600}'>250g - ₹600</option>
+                <option value='{"weight":"500g","price":1200}'>500g - ₹1200</option>
+                <option value='{"weight":"1kg","price":1800}'>1kg - ₹1800</option>
+            </select>
+
+            <button class="btn btn-primary"
+                onclick="addToCart('Gongura Prawns', 'gongura-prawns', '/static/images/prawns_gongura.jpg')"
+                style="width: 100%; justify-content: center;">
+                Add to Cart <i class="fas fa-cart-plus"></i>
+            </button>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-card-premium animate-fade-up" style="animation-delay: 0.5s;">
+            <div class="product-img-wrapper">
+                <img src="/static/images/gongurachicken.jpg" alt="Gongura Chicken Pickle">
+            </div>
+            <h3 class="brand-font" style="margin-bottom: 0.5rem;">Gongura Chicken Pickle</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">Tangy, tender
+                chicken cooked with fiery traditional masalas.</p>
+
+            <select class="price-select" id="gongura-chicken">
+                <option value='{"weight":"250g","price":350}'>250g - ₹350</option>
+                <option value='{"weight":"500g","price":700}'>500g - ₹700</option>
+                <option value='{"weight":"1kg","price":1050}'>1kg - ₹1050</option>
+            </select>
+
+            <button class="btn btn-primary"
+                onclick="addToCart('Gongura Chicken Pickle', 'gongura-chicken', '/static/images/gongurachicken.jpg')"
+                style="width: 100%; justify-content: center;">
+                Add to Cart <i class="fas fa-cart-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <footer style="background: var(--text-main); color: rgba(255,255,255,0.7); padding: 4rem 5%; text-align: center;">
+        <h2 class="brand-font" style="color: white; margin-bottom: 1rem;">HomeMade Pickles & Snacks</h2>
+        <p>&copy; 2024 HomeMade. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+
+        function addToCart(name, selectId, image) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const select = document.getElementById(selectId);
+            const { weight, price } = JSON.parse(select.value);
+
+            const existingItem = cart.find(i => i.name === name && i.weight === weight);
+
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                cart.push({
+                    id: Date.now(),
+                    name,
+                    weight,
+                    price: parseInt(price),
+                    image,
+                    qty: 1
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Feedback
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+            btn.style.background = '#27ae60';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 1500);
+        }
+
+        updateCartCount();
+        window.addEventListener('storage', updateCartCount);
+    </script>
+</body>
+
+</html>

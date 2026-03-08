@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | HomeMade</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .cart-section {
+            padding: 140px 5% 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 3rem;
+        }
+
+        @media (max-width: 968px) {
+            .cart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cart-table-wrapper {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .premium-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .premium-table td {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #f9f9f9;
+            vertical-align: middle;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 5px;
+            width: fit-content;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: none;
+            background: white;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .qty-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .qty-val {
+            width: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .remove-link {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-link:hover {
+            color: #c0392b;
+            text-decoration: underline;
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .summary-total {
+            border-top: 1px solid #eee;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="glass-header">
+        <a href="/" class="brand">
+            <div class="brand-icon">HP</div>
+            <h2 class="brand-font">HomeMade</h2>
+        </a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}" class="nav-link">Dashboard</a></li>
+                <li><a href="{{ url_for('veg_pickles') }}" class="nav-link">Veg</a></li>
+                <li><a href="{{ url_for('non_veg_pickles') }}" class="nav-link">Non-Veg</a></li>
+                <li><a href="{{ url_for('snacks') }}" class="nav-link">Snacks</a></li>
+                <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fas fa-shopping-cart"></i> <span
+                            id="cart-count" class="cart-counter">0</span></a></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-outline btn-sm">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="cart-section">
+        <h1 class="brand-font" style="font-size: 2.5rem; margin-bottom: 2rem;">Shopping Cart</h1>
+
+        <div id="cart-container">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+    </div>
+
+    <footer style="background: var(--text-main); color: rgba(255,255,255,0.7); padding: 4rem 5%; text-align: center;">
+        <h2 class="brand-font" style="color: white; margin-bottom: 1rem;">HomeMade Pickles & Snacks</h2>
+        <p>&copy; 2024 HomeMade. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            const counter = document.getElementById('cart-count');
+            if (counter) counter.textContent = count;
+        }
+
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const container = document.getElementById('cart-container');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart animate-fade-up">
+                        <i class="fas fa-shopping-basket"></i>
+                        <h2 class="brand-font">Your cart is empty</h2>
+                        <p style="color: var(--text-muted); margin: 1rem 0 2rem;">Looks like you haven't added anything yet.</p>
+                        <a href="{{ url_for('home') }}" class="btn btn-primary">Start Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let subtotal = 0;
+            const itemsHtml = cart.map(item => {
+                const total = item.price * item.qty;
+                subtotal += total;
+                return `
+                    <tr>
+                        <td>
+                            <div class="cart-item-info">
+                                <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                                <div>
+                                    <h4 style="margin: 0 0 4px;">${item.name}</h4>
+                                    <span style="color: var(--text-muted); font-size: 0.85rem;">${item.weight}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>₹${item.price}</td>
+                        <td>
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="updateQty(${item.id}, -1)"><i class="fas fa-minus"></i></button>
+                                <div class="qty-val">${item.qty}</div>
+                                <button class="qty-btn" onclick="updateQty(${item.id}, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+                        <td><strong>₹${total}</strong></td>
+                        <td><a class="remove-link" onclick="removeItem(${item.id})"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="cart-grid animate-fade-up">
+                    <div class="cart-table-wrapper">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${itemsHtml}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="cart-summary">
+                        <h3 class="brand-font" style="margin-bottom: 1.5rem;">Order Summary</h3>
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>₹${subtotal}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <span style="color: #27ae60;">FREE</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>₹${subtotal}</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="proceedToCheckout()" style="width: 100%; margin-top: 1.5rem; justify-content: center; height: 55px;">
+                            Checkout Securely
+                        </button>
+                        <a href="{{ url_for('home') }}" style="display: block; text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateQty(id, delta) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.map(item => {
+                if (item.id === id) {
+                    item.qty = Math.max(1, item.qty + delta);
+                }
+                return item;
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+        }
+
+        function removeItem(id) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+        }
+
+        function proceedToCheckout() {
+            // In a real app, we might sync to backend here
+            window.location.href = "{{ url_for('checkout') }}";
+        }
+
+        renderCart();
+        updateCartCount();
+    </script>
+</body>
+
+</html>

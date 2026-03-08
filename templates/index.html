@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeMade Pickles & Snacks | Authentic Flavors</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/static/images/hero_pickles_background.png') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+        }
+
+        .features {
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="glass-header">
+        <a href="/" class="brand">
+            <div class="brand-icon">HP</div>
+            <h2 class="brand-font">HomeMade</h2>
+        </a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
+                <li><a href="{{ url_for('signup') }}" class="btn btn-primary" style="margin-top: -10px;">Sign Up</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="animate-fade-up">
+            <h1 class="hero-title">Authentic<br>Homemade Flavors</h1>
+            <p class="hero-subtitle">Preservative-free, handcrafted pickles and snacks made with traditional recipes
+                passed down through generations.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Discover Catalog <i
+                        class="fas fa-arrow-right"></i></a>
+                <a href="#about" class="btn btn-outline" style="color: white; border-color: white;">Learn Our Story</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="features">
+        <div class="premium-card feature-item">
+            <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+            <h3>Purely Natural</h3>
+            <p>100% Preservative-free ingredients sourced directly from local farmers.</p>
+        </div>
+        <div class="premium-card feature-item">
+            <div class="feature-icon"><i class="fas fa-mortar-pestle"></i></div>
+            <h3>Handcrafted</h3>
+            <p>Small batches made with traditional methods for that authentic "home" taste.</p>
+        </div>
+        <div class="premium-card feature-item">
+            <div class="feature-icon"><i class="fas fa-truck-fast"></i></div>
+            <h3>Fresh Delivery</h3>
+            <p>Straight from our kitchen to your doorstep with vacuum-sealed freshness.</p>
+        </div>
+    </div>
+
+    <footer style="background: var(--text-main); color: rgba(255,255,255,0.7); padding: 4rem 5%; text-align: center;">
+        <h2 class="brand-font" style="color: white; margin-bottom: 1rem;">HomeMade Pickles & Snacks</h2>
+        <p>&copy; 2024 HomeMade. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

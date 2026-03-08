@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | HomeMade</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .contact-section {
+            padding: 140px 5% 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-card {
+            background: var(--primary);
+            color: white;
+            padding: 3rem;
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .info-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .info-item i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 3.5rem;
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1.5px solid #eee;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(76, 114, 68, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="glass-header">
+        <a href="/" class="brand">
+            <div class="brand-icon">HP</div>
+            <h2 class="brand-font">HomeMade</h2>
+        </a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}" class="nav-link">Dashboard</a></li>
+                <li><a href="{{ url_for('about') }}" class="nav-link">Our Story</a></li>
+                <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fas fa-shopping-cart"></i> <span
+                            id="cart-count" class="cart-counter">0</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="contact-section">
+        <div class="contact-grid animate-fade-up">
+            <div class="info-card">
+                <h2 class="brand-font" style="font-size: 2.5rem; margin-bottom: 2rem;">Get in Touch</h2>
+                <p style="opacity: 0.8; margin-bottom: 3rem; line-height: 1.6;">Have a special request or want to learn
+                    more about our process? We'd love to hear from you.</p>
+
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4 style="margin-bottom: 0.3rem;">Kitchen & Office</h4>
+                        <p style="opacity: 0.7; font-size: 0.9rem;">123 Spice Lane, Hyderabad,<br>Telangana, India -
+                            500001</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <h4 style="margin-bottom: 0.3rem;">Phone</h4>
+                        <p style="opacity: 0.7; font-size: 0.9rem;">+91 98765 43210<br>Mon-Sat, 9AM - 7PM</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4 style="margin-bottom: 0.3rem;">Email</h4>
+                        <p style="opacity: 0.7; font-size: 0.9rem;">contact@homemadepickles.in</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 4rem; display: flex; gap: 1rem;">
+                    <a href="#" style="color: white; font-size: 1.2rem; opacity: 0.7;"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="#" style="color: white; font-size: 1.2rem; opacity: 0.7;"><i
+                            class="fab fa-facebook"></i></a>
+                    <a href="#" style="color: white; font-size: 1.2rem; opacity: 0.7;"><i
+                            class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form action="#" method="POST">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-input" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-input" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <select class="form-input">
+                            <option>Order Inquiry</option>
+                            <option>Feedback</option>
+                            <option>Bulk/Business Request</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-input" rows="6" placeholder="How can we help you?" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; justify-content: center; height: 55px; margin-top: 1rem;">
+                        Send Message <i class="fas fa-paper-plane" style="margin-left: 10px; font-size: 0.9rem;"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background: var(--text-main); color: rgba(255,255,255,0.7); padding: 4rem 5%; text-align: center;">
+        <h2 class="brand-font" style="color: white; margin-bottom: 1rem;">HomeMade Pickles & Snacks</h2>
+        <p>&copy; 2024 HomeMade. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+        updateCartCount();
+    </script>
+</body>
+
+</html>
