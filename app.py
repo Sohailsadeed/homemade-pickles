@@ -10,10 +10,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY', 'default_secret_key_123')
+app.secret_key = os.getenv('SECRET_KEY')
 
 # MongoDB Connection (Supports Atlas and Local)
-MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
+MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 db = client['homemade_pickles']
 users_collection = db['users']
