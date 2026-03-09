@@ -10,7 +10,7 @@ import json
 SECRET_KEY = "super_random_secret_key_93847"
 PORT = 5000
 DEBUG = True
-AWS_REGION = "ap-south-1"
+AWS_REGION = "us-east-1"
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
