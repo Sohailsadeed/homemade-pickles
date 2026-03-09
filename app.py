@@ -4,7 +4,7 @@ from datetime import datetime
 import uuid
 import boto3
 import json
-
+from decimal import Decimal
 # ================== APP CONFIG ==================
 
 SECRET_KEY = "super_random_secret_key_93847"
@@ -220,7 +220,7 @@ def checkout():
             cart_data = request.form.get("cart_data", "[]")
             total_amount = request.form.get("total_amount", "0")
 
-            cart_items = json.loads(cart_data)
+            cart_items = json.loads(cart_data, parse_float=Decimal)
 
             orders_table.put_item(
                 Item={
@@ -232,7 +232,7 @@ def checkout():
                         "phone": phone
                     },
                     "items": cart_items,
-                    "total_amount": float(total_amount),
+                    "total_amount": Decimal(str(total_amount)),
                     "payment_method": payment_method,
                     "timestamp": str(datetime.now())
                 }
